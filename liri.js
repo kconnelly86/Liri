@@ -11,11 +11,14 @@ var request = require("request");//to request the api's
 //take in command for what does user wants to do? (tweet, moveie, or song search)
 var userCommand = process.argv[2]
 //user input name of song, movie or tweet title
-var lookUpTitle = process.argv[3]
-
+var lookUpTitle = process.argv
+var leftOver =  "";
+for (var i = 3; i < lookUpTitle.length; i++){
+	leftOver += lookUpTitle[i]
+}
 //Switch statements to declare what action to excute
- //function switchCommand(param) {
-   //userCommand = userCommand || param
+ // function switchCommand(param) {
+ //   userCommand = userCommand || param
   switch (userCommand) {
     case "my-tweets":
       twitterGrab();
@@ -59,8 +62,6 @@ function twitterGrab() {
   });
 
 };// ends twitterGrab
-// this twitter grab calls the twitter grab but when i take it out it doesnt run the twitter grab from the switch case.
-// twitterGrab();
 
 
 
