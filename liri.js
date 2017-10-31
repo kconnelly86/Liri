@@ -143,15 +143,31 @@ function doIt(){
      	}else{
         console.log(data)
      	//split data, declare variables
-     	var dataArr = data.split(',');
-        userCommand = dataArr[0];
-        lookUpTitle = dataArr[1];
+     	console.log("data: " + data);
+        userCommandArray = data.split(" ");
+        userCommand = userCommandArray[0];
+        leftOver = userCommandArray[1];
+        console.log("userCommand: " + userCommand);
+        console.log("leftOver: " + leftOver);
         // //if multi-word search term, add.
-        for(i=2; i<dataArr.length; i++){
-            lookUpTitle = lookUpTitle + "+" + dataArr[i];
-        };
-        //run action
-		  switchCommand();
+        // for(i=2; i<dataArr.length; i++){
+        //     lookUpTitle = lookUpTitle + "+" + dataArr[i];
+        // };
+        //run action	
+		  switch (userCommand) {
+		    case "my-tweets":
+		      twitterGrab();
+		      break;
+
+		    case "spotify-this-song":
+		      spotifyGrab();
+		      break;
+
+		    case "movie-this":
+		      ombdGrab();
+		      break;
+
+		  }
 
     	};//end else
 
