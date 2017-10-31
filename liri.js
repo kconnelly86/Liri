@@ -22,8 +22,8 @@ for (var i = 3; i < lookUpTitle.length; i++) {
     
 
 //Switch statements to declare what action to excute
- // function switchCommand(param) {
- //   userCommand = userCommand || param
+ //function switchCommand(param) {
+  //userCommand = userCommand || param
   switch (userCommand) {
     case "my-tweets":
       twitterGrab();
