@@ -1,20 +1,10 @@
 
-// commands to be run for switch case
-// my-tweets
-
-// spotify-this-song
-
-// movie-this
-
-// do-what-it-says
-
-
 // link to keys.js 
 var keys = require("./keys.js");
 
 //package dependencies 
 var twitter = require("twitter");
-// var spotify = require("node-spotify-api");
+var Spotify = require("node-spotify-api");
 var fs = require("fs");//read write file system..
 var request = require("request");//to request the api's
 
@@ -24,8 +14,8 @@ var userCommand = process.argv[2]
 var lookUpTitle = process.argv[3]
 
 //Switch statements to declare what action to excute
-function switchCommand(param) {
-  userCommand = userCommand || param
+ //function switchCommand(param) {
+   //userCommand = userCommand || param
   switch (userCommand) {
     case "my-tweets":
       twitterGrab();
@@ -44,7 +34,7 @@ function switchCommand(param) {
       break;
 
   }
-}; //end of switch function
+// }; //end of switch function
 
 function twitterGrab() {
 	
@@ -69,8 +59,100 @@ function twitterGrab() {
   });
 
 };// ends twitterGrab
+// this twitter grab calls the twitter grab but when i take it out it doesnt run the twitter grab from the switch case.
+// twitterGrab();
 
-twitterGrab();
+
+
+function spotifyGrab() {
+	console.log(keys.spotifyKeys.client_id);
+	var spotify = new Spotify({
+		id: keys.spotifyKeys.client_id,
+		secret: keys.spotifyKeys.client_secret
+
+	})//ends var spotify, possibly remove semi-colon
+
+	var musicSearch;
+	if(lookUpTitle === undefined) {
+		musicSearch = "The Sign";	
+	}else {
+    musicSearch = lookUpTitle;
+  }
+  //launch spotify search
+  spotify
+  	.search({
+    type: "track",
+    query: musicSearch
+  }, function(err, data) {
+    if (err) {
+      return console.log("Error occurred: " + err);
+      //return;
+    } else {
+
+      console.log("Artist: ",  data.tracks.items[0].artists[0].name);
+      console.log("Song: ",  data.tracks.items[0].name);
+      console.log("Album: ", data.tracks.items[0].album.name);
+      console.log("Preview Here: ", data.tracks.items[0].preview_url);
+    }
+  });
+}//ends spotifyGrab
+
+function ombdGrab() {
+  console.log("Is this the movie you are you looking for?");
+
+  //same as above, test if search term entered
+  var movieSearch;
+  if (lookUpTitle === undefined) {
+    movieSearch = "Mr. Nobody";
+  } else {
+    movieSearch = lookUpTitle;
+  };
+
+  //store ombd request in a variable
+  var ombdURL = 'http://www.omdbapi.com/?t=' + movieSearch + '&y=&plot=long&apikey=40e9cece';
+
+  request(ombdURL, function(error, response, body) {
+    // If the request is successful and not a error
+    if (!error && response.statusCode == 200) {
+      console.log("Title: " + JSON.parse(body)["Title"]);
+      console.log("Year: " + JSON.parse(body)["Year"]);
+      console.log("IMDB Rating: " + JSON.parse(body)["imdbRating"]);
+      console.log("Country: " + JSON.parse(body)["Country"]);
+      console.log("Language: " + JSON.parse(body)["Language"]);
+      console.log("Plot: " + JSON.parse(body)["Plot"]);
+      console.log("Actors: " + JSON.parse(body)["Actors"]);
+      console.log("Rotten Tomatoes Rating: " + JSON.parse(body)["tomatoRating"]);
+      console.log("Rotten Tomatoes URL: " + JSON.parse(body)["tomatoURL"]);
+    }
+  });
+}; //end of movieGrab
+
+function doIt(){
+
+  console.log("Searching random.txt now");
+	fs.readFile("./random.txt", "UTF8", function(error, data) {
+	    if(error){
+     		console.log(error);
+     	}else{
+        console.log(data)
+     	//split data, declare variables
+     	var dataArr = data.split(',');
+        userCommand = dataArr[0];
+        lookUpTitle = dataArr[1];
+        // //if multi-word search term, add.
+        for(i=2; i<dataArr.length; i++){
+            lookUpTitle = lookUpTitle + "+" + dataArr[i];
+        };
+        //run action
+		  switchCommand();
+
+    	};//end else
+
+    });//end readfile
+
+};//end followTheTextbook
+
+//switchCommand(); //evoke switchCommand
 
 
 
