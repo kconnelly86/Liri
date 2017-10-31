@@ -8,14 +8,19 @@ var Spotify = require("node-spotify-api");
 var fs = require("fs");//read write file system..
 var request = require("request");//to request the api's
 
-//take in command for what does user wants to do? (tweet, moveie, or song search)
-var userCommand = process.argv[2]
+//take in command for what does user wants to do? (tweet, movie, or song search)
+var userCommand = process.argv[2];
 //user input name of song, movie or tweet title
-var lookUpTitle = process.argv
+var lookUpTitle = process.argv;
 var leftOver =  "";
-for (var i = 3; i < lookUpTitle.length; i++){
-	leftOver += lookUpTitle[i]
+
+for (var i = 3; i < lookUpTitle.length; i++) {
+	leftOver += lookUpTitle[i] + " ";
+//console.log(leftOver);
+
 }
+    
+
 //Switch statements to declare what action to excute
  // function switchCommand(param) {
  //   userCommand = userCommand || param
@@ -37,7 +42,7 @@ for (var i = 3; i < lookUpTitle.length; i++){
       break;
 
   }
-// }; //end of switch function
+//}; //end of switch function
 
 function twitterGrab() {
 	
@@ -74,10 +79,10 @@ function spotifyGrab() {
 	})//ends var spotify, possibly remove semi-colon
 
 	var musicSearch;
-	if(lookUpTitle === undefined) {
+	if(leftOver === undefined) {
 		musicSearch = "The Sign";	
 	}else {
-    musicSearch = lookUpTitle;
+    musicSearch = leftOver;
   }
   //launch spotify search
   spotify
@@ -103,10 +108,10 @@ function ombdGrab() {
 
   //same as above, test if search term entered
   var movieSearch;
-  if (lookUpTitle === undefined) {
+  if (leftOver === undefined) {
     movieSearch = "Mr. Nobody";
   } else {
-    movieSearch = lookUpTitle;
+    movieSearch = leftOver;
   };
 
   //store ombd request in a variable
@@ -115,6 +120,7 @@ function ombdGrab() {
   request(ombdURL, function(error, response, body) {
     // If the request is successful and not a error
     if (!error && response.statusCode == 200) {
+    	//console.log(body);
       console.log("Title: " + JSON.parse(body)["Title"]);
       console.log("Year: " + JSON.parse(body)["Year"]);
       console.log("IMDB Rating: " + JSON.parse(body)["imdbRating"]);
