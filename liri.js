@@ -10,20 +10,16 @@ var request = require("request");//to request the api's
 
 //take in command for what does user wants to do? (tweet, movie, or song search)
 var userCommand = process.argv[2];
+
 //user input name of song, movie or tweet title
 var lookUpTitle = process.argv;
 var leftOver =  "";
 
 for (var i = 3; i < lookUpTitle.length; i++) {
 	leftOver += lookUpTitle[i] + " ";
-//console.log(leftOver);
-
 }
     
-
 //Switch statements to declare what action to excute
- //function switchCommand(param) {
-  //userCommand = userCommand || param
   switch (userCommand) {
     case "my-tweets":
       twitterGrab();
@@ -42,10 +38,8 @@ for (var i = 3; i < lookUpTitle.length; i++) {
       break;
 
   }
-//}; //end of switch function
 
 function twitterGrab() {
-	
 	console.log("My Tweets:");
 	var client = new twitter(keys.twitterKeys);
   	var parameters = {
@@ -149,11 +143,7 @@ function doIt(){
         leftOver = userCommandArray[1];
         console.log("userCommand: " + userCommand);
         console.log("leftOver: " + leftOver);
-        // //if multi-word search term, add.
-        // for(i=2; i<dataArr.length; i++){
-        //     lookUpTitle = lookUpTitle + "+" + dataArr[i];
-        // };
-        //run action	
+        
 		  switch (userCommand) {
 		    case "my-tweets":
 		      twitterGrab();
@@ -175,7 +165,7 @@ function doIt(){
 
 };//end followTheTextbook
 
-//switchCommand(); //evoke switchCommand
+
 
 
 
